@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CoinGecko — топ, конвертер, график</title>
+  <link rel="stylesheet" href="/static/style.css" />
+<!--  <style>-->
+<!--    -->
+<!--  </style>-->
+</head>
+
+<body>
+  <div class="container">
+    <header class="page-header">
+      <div class="title-wrap">
+        <h1>CoinGecko</h1>
+        <p class="muted">Таблица топ-монет, конвертер и график цены за период (без API-ключа).</p>
+      </div>
+      <div class="actions">
+        <button id="toggle-theme" class="btn ghost" title="Переключить тему">🌓</button>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Топ монет (по капитализации)</h2>
+        <div class="controls">
+          <label>Валюта
+            <input id="vs" type="text" value="usd" placeholder="usd" />
+          </label>
+          <label>Сколько
+            <input id="per-page" type="number" value="50" min="1" max="250" />
+          </label>
+          <button id="btn-load" class="btn primary">Загрузить</button>
+          <a id="btn-export" class="btn" href="#" download>Экспорт CSV</a>
+          <span id="hint" class="muted small"></span>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <label class="grow">Фильтр
+          <input id="filter" type="text" placeholder="Например: btc, bitcoin" />
+        </label>
+        <span class="muted small" id="count-label"></span>
+      </div>
+
+      <div class="table-wrap">
+        <table id="coins-table">
+          <colgroup>
+            <col style="width:70px" />
+            <col style="width:170px" />
+            <col style="width:110px" />
+            <col style="width:160px" />
+            <col style="width:180px" />
+            <col />
+          </colgroup>
+          <thead>
+            <tr>
+              <th data-sort="market_cap_rank">#</th>
+              <th data-sort="id">ID</th>
+              <th data-sort="symbol">Тикер</th>
+              <th data-sort="current_price" class="num">Цена</th>
+              <th data-sort="market_cap" class="num">Капитализация</th>
+              <th data-sort="name">Название</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="loader" class="loader hidden">Загрузка…</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Конвертер</h2>
+      </div>
+      <div class="grid grid-4">
+        <label>Монета (coin_id)
+          <input id="coin-id" list="coin-ids" placeholder="bitcoin" />
+        </label>
+        <label>Валюта
+          <input id="vs-conv" type="text" value="usd" placeholder="usd" />
+        </label>
+        <label>Количество
+          <input id="amount" type="number" step="0.0001" value="1" />
+        </label>
+        <div class="row end">
+          <button id="btn-convert" class="btn primary">Посчитать</button>
+        </div>
+      </div>
+      <div class="row mt">
+        <div id="conv-result" class="result grow"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>График цены за период</h2>
+      </div>
+      <div class="grid grid-graph">
+        <label>Монета (coin_id)
+          <input id="hist-coin" list="coin-ids" placeholder="bitcoin"/>
+        </label>
+        <label>Валюта
+          <input id="hist-vs" type="text" value="usd" placeholder="usd" />
+        </label>
+        <label>Период с
+          <input id="hist-from" type="date"/>
+        </label>
+        <label>по
+          <input id="hist-to" type="date"/>
+        </label>
+        <button id="btn-history" class="btn primary">Построить</button>
+      </div>
+
+      <div class="chart-wrap" style="position:relative">
+        <canvas id="chart" width="1000" height="360"></canvas>
+        <div id="chart-tooltip"></div>
+        <div id="chart-empty" class="muted small center">Выбери монету и период, затем нажми «Построить»</div>
+      </div>
+    </section>
+
+    <footer class="muted center small mt-lg">
+      API: <code>/cg/top</code> · <code>/cg/price</code> · <code>/cg/convert</code> · <code>/cg/top.csv</code> · <code>/cg/history</code>
+    </footer>
+  </div>
+
+  <datalist id="coin-ids">
+    {% for c in coin_ids %}
+      <option value="{{ c }}"></option>
+    {% endfor %}
+  </datalist>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
