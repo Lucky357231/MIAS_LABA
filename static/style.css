@@ -1,0 +1,146 @@
+:root { 
+  --fg: #0f172a; --muted: #64748b; --card: #ffffff; --bg: #f8fafc; --br: #e2e8f0; 
+  --primary: #2563eb; --primary-ink: #fff; --ok: #22c55e; --err: #ef4444;
+}
+:root.dark {
+  --fg: #e5e7eb; --muted: #94a3b8; --card: #0b1220; --bg: #0a0f1a; --br: #1f2937;
+  --primary: #3b82f6; --primary-ink: #0b1220;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif; color: var(--fg); background: var(--bg); }
+.container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.page-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+h1 { margin: 0; font-size: 28px; }
+h2 { margin: 0; font-size: 22px; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.center { text-align: center; }
+.mt { margin-top: 10px; }
+.mt-lg { margin-top: 24px; }
+.grow { flex: 1 1 auto; }
+
+.card { background: var(--card); margin-top: 16px; padding: 16px; border: 1px solid var(--br); border-radius: 14px; box-shadow: 0 1px 1px rgba(0,0,0,.03); }
+.card-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.controls { display: flex; align-items: end; gap: 10px; flex-wrap: wrap; }
+
+.grid { display: grid; gap: 12px; }
+.grid-5 { grid-template-columns: 1fr auto 1fr 1fr 1fr; }
+.grid-graph { grid-template-columns: 1fr 1fr 1fr auto; align-items: end; }
+.swap-wrap { display: flex; align-items: end; padding-bottom: 2px; }
+
+label { display: inline-flex; flex-direction: column; gap: 6px; font-size: 14px; }
+input[type="date"], input[list], input[type="number"], input[type="text"] { padding: 10px 12px; border: 1px solid var(--br); border-radius: 10px; min-width: 160px; background: transparent; color: var(--fg); }
+input::placeholder { color: var(--muted); }
+
+.btn { padding: 10px 14px; border: 1px solid var(--br); background: #f1f5f9; color: #0f172a; border-radius: 10px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.btn:hover { background: #e2e8f0; }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: var(--primary-ink); }
+.btn.primary:hover { filter: brightness(0.95); }
+.btn.ghost { background: transparent; }
+
+.toolbar { display: flex; gap: 12px; align-items: end; margin-bottom: 8px; }
+
+.table-wrap { position: relative; overflow: auto; border: 1px solid var(--br); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: auto; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--br); vertical-align: middle; }
+th { text-align: left; background: rgba(0,0,0,.03); position: sticky; top: 0; z-index: 1; user-select: none; }
+tbody tr:nth-child(odd) { background: rgba(0,0,0,.02); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.w-name { min-width: 280px; }
+th.sorted-asc::after { content: " ▲"; font-size: 12px; color: var(--muted); }
+th.sorted-desc::after { content: " ▼"; font-size: 12px; color: var(--muted); }
+
+.loader { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.6); backdrop-filter: blur(1px); }
+:root.dark .loader { background: rgba(0,0,0,.3); }
+.hidden { display: none; }
+
+.result { padding: 10px; border-radius: 10px; border: 1px solid var(--br); background: #f8fafc; min-height: 40px; display: flex; align-items: center; }
+.result.ok { border-color: var(--ok); background: rgba(34,197,94,.08); }
+.result.error { border-color: var(--err); background: rgba(239,68,68,.08); }
+
+.chart-wrap { position: relative; border: 1px solid var(--br); border-radius: 12px; padding: 10px; background: var(--card); overflow: hidden; }
+canvas { width: 100%; height: auto; display: block; }
+#chart-empty { padding: 10px; }
+
+.toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: #0b1220; color: white; padding: 10px 14px; border-radius: 10px; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
+.toast.ok { background: #0b1220; }
+.toast.error { background: #7f1d1d; }
+.toast.hidden { display: none; }
+
+@media (max-width: 900px) {
+  .grid-5 { grid-template-columns: 1fr 1fr; }
+  .grid-graph { grid-template-columns: 1fr 1fr; }
+  .swap-wrap { order: 3; }
+}
+
+/* Ровные числовые колонки */
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;         /* включить табличные цифры */
+  font-feature-settings: "tnum" 1, "lnum" 1;  /* для браузеров без font-variant */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+               "Liberation Mono", "Roboto Mono", monospace; /* моно-цифры */
+  white-space: nowrap;
+}
+.code { white-space: nowrap; }
+.name { white-space: normal; }
+
+/* Таблица не прыгает по ширинам колонок */
+table { table-layout: fixed; }
+
+
+
+/* --- LAB3 RESPONSIVE PATCH --- */
+/* FIX: чтобы элементы не распирали сетку на узких экранах */
+label { min-width: 0; }
+.grid label, .controls label, .toolbar label { min-width: 0; }
+
+.grid input[type="date"],
+.grid input[list],
+.grid input[type="number"],
+.grid input[type="text"],
+.controls input[type="date"],
+.controls input[list],
+.controls input[type="number"],
+.controls input[type="text"],
+.toolbar input[type="text"] {
+  min-width: 0;
+  width: 100%;
+}
+
+/* В HTML используется .row, добавим стиль */
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+/* Плавный скролл таблицы на iOS/Android */
+.table-wrap { -webkit-overflow-scrolling: touch; }
+
+/* Планшет и небольшие окна */
+@media (max-width: 900px) {
+  .page-header { flex-wrap: wrap; }
+  .toolbar { flex-wrap: wrap; }
+}
+
+/* Телефон */
+@media (max-width: 640px) {
+  .container { padding: 12px; }
+
+  .page-header { flex-direction: column; align-items: stretch; }
+  .actions { display: flex; justify-content: flex-end; }
+
+  .card-head { flex-direction: column; align-items: stretch; }
+  .controls { width: 100%; }
+
+  /* Сетки: в 1 колонку */
+  .grid-5 { grid-template-columns: 1fr; }
+  .grid-graph { grid-template-columns: 1fr; }
+  .swap-wrap { padding-bottom: 0; justify-content: flex-start; }
+
+  /* Кнопки внутри карточек — во всю ширину (удобно пальцем) */
+  .card .btn { width: 100%; justify-content: center; }
+  .actions .btn { width: auto; }
+
+  /* Чтобы название колонки не раздувало таблицу */
+  .w-name { min-width: 220px; }
+}
+
